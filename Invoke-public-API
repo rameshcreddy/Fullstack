@@ -1,0 +1,67 @@
+# API programming using Python 
+# Leverage Public APIs
+#        - GET "Stack Over flow " questions and process to identify questions with NO Answers 
+#        - GET "Stack over flow"  Titles to review the topics of interest  
+
+# Import libraries 
+
+import requests
+import json
+
+
+# request and response format 
+
+response = requests.get(
+    'http://api.stackexchange.com/2.2/questions?order=desc&sort=activity&site=stackoverflow'
+)
+
+# Test and try output format from the API 
+
+#print(response) # returns the response code 
+#print(response.json()) # returns actual results 
+#print(response.json()['items']) # actual list of items 
+
+# print the first items of "items" 
+# print(response.json()['items'][1])
+
+total = 0 
+# iterate through the list to pick questions with answer count zero 
+for questions in response.json()['items']:
+    
+    if questions['answer_count'] == 0:
+        total = total + 1 
+        
+        print(questions['title'])
+        print(questions['link'])
+        print()
+        print(questions['answer_count'])
+     
+    print()
+
+
+print("Total number of questions with ZERO answers are" + str(total))
+
+
+# request and response format 
+
+# Invoke tags API and capture the output in res-tag
+
+res_tag = requests.get(
+    'http://api.stackexchange.com/2.3/tags?order=desc&sort=popular&site=stackoverflow'
+)
+
+# capture response code 
+
+print(res_tag)
+
+
+# iterate through the answers and print tags 
+
+tags_total = 0 
+
+for elements in res_tag.json()['items']:
+    print(elements['name'])
+    tags_total = tags_total +1 
+
+
+print("The total number of categories / tags are  " + str(tags_total))
